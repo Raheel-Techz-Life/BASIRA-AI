@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.pytest_tmp/
+data/raw/
+data/processed/
+models/checkpoints/*.joblib
+models/checkpoints/_tmp_upload.png
+.streamlit/secrets.toml
+*.egg-info/
+train_run.log

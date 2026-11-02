@@ -1,0 +1,25 @@
+{
+  "model_name": "random_forest",
+  "feature_names": [
+    "intensity_mean",
+    "intensity_std",
+    "intensity_p10",
+    "intensity_p50",
+    "intensity_p90",
+    "glcm_contrast",
+    "glcm_homogeneity",
+    "glcm_energy",
+    "glcm_correlation",
+    "foreground_area_fraction",
+    "centroid_offset_x",
+    "centroid_offset_y"
+  ],
+  "classes": [
+    "notumor",
+    "glioma",
+    "meningioma",
+    "pituitary"
+  ],
+  "task": "educational_existing_tumor_classification",
+  "NOT": "future_tumor_risk_prediction"
+}
