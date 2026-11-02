@@ -5,7 +5,10 @@ __pycache__/
 .pytest_tmp/
 data/raw/
 data/processed/
+models/checkpoints/*.joblib
+models/checkpoints/*.pt
 models/checkpoints/_tmp_upload.png
 .streamlit/secrets.toml
 *.egg-info/
 train_run.log
+cnn_train_run.log

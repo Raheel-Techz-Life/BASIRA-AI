@@ -1,0 +1,15 @@
+{
+  "model_name": "simple_cnn",
+  "classes": [
+    "notumor",
+    "glioma",
+    "meningioma",
+    "pituitary"
+  ],
+  "input": "1x128x128 grayscale, same preprocessing as the RF baseline",
+  "epochs": 6,
+  "batch_size": 64,
+  "best_val_macro_f1": 0.8829201469426625,
+  "task": "educational_existing_tumor_classification",
+  "NOT": "future_tumor_risk_prediction"
+}

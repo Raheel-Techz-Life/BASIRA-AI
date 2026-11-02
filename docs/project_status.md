@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-11-02 (Day 1 of 2, demo due 2026-11-04)
 
-## Phase: 0 (environment) and 1 (feasibility) complete; 3-4 (pipeline/baseline) in progress
+## Phase: 0-4 and 6 (CNN comparison) complete; 7-9 mostly done — see below
 
 ## Completed and verified
 
@@ -95,10 +95,38 @@ trained model.
   dialogs) — noted, not hidden, with the underlying code path verified
   another way (`tests/test_predict.py`).
 
+## GitHub + UI polish (2026-11-02, later same day)
+
+- Pushed to [github.com/Raheel-Techz-Life/BASIRA-AI](https://github.com/Raheel-Techz-Life/BASIRA-AI)
+  — isolated `git init` inside this folder (a pre-existing, unrelated git
+  repo was found rooted at the Windows user profile level; left untouched).
+  venv, raw dataset, and model binaries excluded via `.gitignore`.
+- Streamlit UI redesigned: tabbed layout (Overview / Try it / Results &
+  evaluation / Documentation), a themed hero + status-pill header built
+  from live checks (not hardcoded), a real quick-sample gallery (actual
+  Testing-split images, one click to a real prediction — this also
+  resolved the earlier "can't automate file upload" testing gap), and a
+  later decluttering pass that merged three stacked header boxes into one
+  and cut duplicated explanatory text.
+
+## Phase 6 — CNN comparison (2026-11-02, later same day)
+
+- Added `src/models/cnn.py` (small 3-conv-block CNN, ~170K params) and
+  `src/models/train_cnn.py`, run for real: 6 epochs, ~9s/epoch on CPU,
+  same train/validation split as the RF baseline for a fair comparison.
+- **Real result**: 82.4% accuracy / 0.820 macro-F1 on the held-out Testing
+  split — does **not** clearly beat the Random Forest (83.3%/0.828). Full
+  honest comparison, including the per-class trade-offs (CNN better on
+  glioma, worse on meningioma), in `docs/evaluation.md`.
+- **The Random Forest stays the primary model** for the live "Try it" demo
+  — the CNN result didn't justify a swap, and the comparison itself (shown
+  in the app's Results tab and in docs) is the deliverable, not a forced
+  "upgrade."
+- 2 new smoke tests (`tests/test_cnn.py`) — full suite now 11/11 passing.
+
 ## Next actions (before Wednesday 2026-11-04)
 
-1. Rehearse the demo yourself using `docs/demo_script.md`, including the
-   one upload-click interaction Claude could not drive directly.
+1. Rehearse the demo yourself using `docs/demo_script.md`.
 2. Flag the academic-title discrepancy with the mentor before final
    submission (not resolved by this sprint — by design, not an oversight).
 3. Optional polish if time remains: address the `SVC(probability=True)`

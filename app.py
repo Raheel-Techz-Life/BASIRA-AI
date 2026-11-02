@@ -478,6 +478,39 @@ with tab_results:
             st.bar_chart(comp_df)
             st.dataframe(comp_df, use_container_width=True)
 
+        cnn_results_path = EXPERIMENTS_RESULTS / "cnn_test_results.json"
+        if cnn_results_path.exists():
+            with open(cnn_results_path) as f:
+                cnn_tr = json.load(f)
+            st.markdown("---")
+            st.markdown("**Traditional ML vs. CNN — held-out Testing split**")
+            st.caption(
+                "Added as a separate comparison per the master prompt's own "
+                "phasing: a neural network is only introduced after a "
+                "traditional-ML baseline exists and is evaluated. The "
+                "live 'Try it' demo still uses the Random Forest unless "
+                "the CNN clearly and consistently outperforms it — see "
+                "docs/evaluation.md for the full, honest comparison."
+            )
+            cnn_vs_rf = pd.DataFrame(
+                {
+                    "random_forest (baseline)": {
+                        "accuracy": tr["accuracy"],
+                        "macro_f1": tr["macro_f1"],
+                    },
+                    "simple_cnn (comparison)": {
+                        "accuracy": cnn_tr["accuracy"],
+                        "macro_f1": cnn_tr["macro_f1"],
+                    },
+                }
+            ).T.round(3)
+            st.dataframe(cnn_vs_rf, use_container_width=True)
+        else:
+            st.caption(
+                "No CNN comparison yet — run `python -m src.models.train_cnn` "
+                "to add one."
+            )
+
 # -------------------------------------------------------------- Docs tab
 with tab_docs:
     st.subheader("Project documentation")

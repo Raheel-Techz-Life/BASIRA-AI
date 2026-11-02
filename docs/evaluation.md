@@ -75,3 +75,42 @@ Random Forest selected as best model by validation macro-F1.
   probability, and the app UI says so.
 - These are detection-of-visible-tumor results. **They say nothing about
   future tumor risk prediction**, which remains unbuilt.
+
+## CNN comparison (added later, per master prompt Phase 6)
+
+The master prompt's own phasing says a neural network is only introduced
+after a traditional-ML baseline exists and is evaluated (Section 6). That
+baseline is the Random Forest above. A small CNN (`src/models/cnn.py`,
+3 conv blocks + 2 FC layers, ~170K parameters) was then trained for
+comparison — real run, `python -m src.models.train_cnn`, 2026-11-02,
+6 epochs, ~9s/epoch on CPU. Raw output:
+`experiments/results/cnn_test_results.json`,
+`experiments/results/cnn_training_history.json`.
+
+**Held-out Testing split (n=1,600):**
+
+| Model | Accuracy | Macro F1 |
+|---|---|---|
+| **Random Forest (baseline)** | **0.833** | **0.828** |
+| Simple CNN (6 epochs) | 0.824 | 0.820 |
+
+| Class | RF recall | CNN recall |
+|---|---|---|
+| notumor | 1.000 | 0.978 |
+| glioma | 0.627 | **0.718** |
+| meningioma | 0.777 | 0.662 |
+| pituitary | 0.927 | 0.938 |
+
+**Honest read:** the CNN does not clearly outperform the Random Forest —
+it's marginally worse overall (−0.9pp accuracy, −0.8pp macro-F1), and
+trades errors around rather than reducing them: it improves glioma recall
+(a real weak point of the RF) but makes meningioma recall meaningfully
+worse. With only 6 epochs and no data augmentation, this is not a ceiling
+on what a CNN could do on this dataset — more epochs, augmentation, or a
+pretrained backbone would likely close or reverse the gap. But as actually
+trained, there is no honest basis to claim the CNN is better, so **the
+Random Forest remains the primary model** used by the live "Try it" demo in
+`app.py`. The CNN's artifacts (`models/checkpoints/cnn_classifier.pt`,
+`cnn_model_metadata.json`) are saved and the comparison is shown in the
+app's Results tab, but nothing in the UI or docs claims it replaces the
+baseline.

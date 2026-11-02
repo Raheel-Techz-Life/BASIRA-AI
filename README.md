@@ -70,6 +70,18 @@ This builds manifests, extracts features, trains/compares majority-baseline,
 logistic regression, random forest, and SVM, and saves the best model to
 `models/checkpoints/`. Results are saved to `experiments/results/`.
 
+## Optional: train the CNN comparison model
+
+```bash
+.\venv\Scripts\python.exe -m src.models.train_cnn
+```
+
+Trains a small CNN on the same split as the Random Forest baseline and
+saves a head-to-head comparison to `experiments/results/cnn_test_results.json`
+(see `docs/evaluation.md`). The live demo still uses the Random Forest —
+the CNN did not outperform it in testing, so swapping it in would not be
+honest. This is optional and not required to run the app.
+
 ## Run the web app
 
 ```bash
