@@ -1,0 +1,6 @@
+# Optional: only needed to run `python -m src.models.train_cnn`.
+# The deployed app (app.py) never imports torch at runtime — it only reads
+# the CNN's already-saved JSON results for the comparison table — so this
+# is kept out of requirements.txt to keep deployment fast and lean.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch

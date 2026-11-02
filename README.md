@@ -73,6 +73,7 @@ logistic regression, random forest, and SVM, and saves the best model to
 ## Optional: train the CNN comparison model
 
 ```bash
+.\venv\Scripts\python.exe -m pip install -r requirements-cnn.txt
 .\venv\Scripts\python.exe -m src.models.train_cnn
 ```
 
@@ -80,7 +81,9 @@ Trains a small CNN on the same split as the Random Forest baseline and
 saves a head-to-head comparison to `experiments/results/cnn_test_results.json`
 (see `docs/evaluation.md`). The live demo still uses the Random Forest —
 the CNN did not outperform it in testing, so swapping it in would not be
-honest. This is optional and not required to run the app.
+honest. This is optional, not required to run the app, and kept in a
+separate `requirements-cnn.txt` (PyTorch, ~130MB) so the deployed app's
+install stays fast — `app.py` never imports torch.
 
 ## Run the web app
 
@@ -99,6 +102,26 @@ $env:BASIRA_ADMIN_PASSWORD = "choose-your-own-password"
 
 Without this variable set, the app runs normally — the admin export section
 is simply unavailable, and the full upload → predict demo still works.
+
+## Deploying (Streamlit Community Cloud)
+
+This is a long-running Streamlit server, not a serverless function — it
+cannot run on Vercel (confirmed and reverted during this project). The
+dataset is intentionally excluded (Kaggle licensing), so the trained
+model (`models/checkpoints/*.joblib`) is committed to the repo so a fresh
+deployment can serve predictions without retraining.
+
+1. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub.
+2. **New app** → repo `Raheel-Techz-Life/BASIRA-AI`, branch `main`, main
+   file path `app.py`. Python version is pinned via `.python-version`
+   (3.12).
+3. Deploy — it installs from `requirements.txt` only (lean, no PyTorch).
+4. Optional: to enable the admin export panel, add
+   `BASIRA_ADMIN_PASSWORD` as a secret under **Settings → Secrets**.
+
+**Before sharing the link:** the repo is public, which means the trained
+model and all docs are public too. Fine for an academic demo — just be
+aware of it, and switch the GitHub repo to private first if you'd rather not.
 
 ## Project structure
 
